@@ -220,7 +220,7 @@ public class Sketch extends PApplet{
              score();
             // System.out.println("OK");
          }
-         
+         finTemps();
     }  
             
     void paveBas(){
@@ -255,7 +255,7 @@ public class Sketch extends PApplet{
                 case 2: ligClick=ligVide-1;colClick=colVide; break;
                 case 3: colClick=colVide+1;ligClick=ligVide; break;
             }
-            Collections.reverse(resolution);
+            Collections.sort(resolution);
             deplacerCaseVide(d);
          }
      }
