@@ -256,6 +256,7 @@ public class Sketch extends PApplet{
                 case 3: colClick=colVide+1;ligClick=ligVide; break;
             }
             Collections.sort(resolution);
+            Collections.reverse(resolution);
             deplacerCaseVide(d);
          }
      }
