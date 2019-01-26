@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import processing.core.PApplet;
-import entites.*;
 
 public class Sketch extends PApplet{
     
@@ -56,6 +55,9 @@ public class Sketch extends PApplet{
      
         
         tempsD= System.currentTimeMillis();
+//        System.out.println(resolution);
+//        Collections.reverse(resolution);
+//        System.out.println(resolution);
     }
     
     @Override
@@ -74,7 +76,7 @@ public class Sketch extends PApplet{
     @Override
     public void keyPressed(KeyEvent e){
         //Reboot + plus difficile
-        if (e.getKeyCode() == KeyEvent.VK_D){
+        if (e.getKeyCode() == KeyEvent.VK_R){
             NBDEPMAX++;
             niveau++;
             setup();
@@ -83,6 +85,10 @@ public class Sketch extends PApplet{
         //Solution
         if (e.getKeyCode() == KeyEvent.VK_S){
             resolution();
+        }
+        
+        if (e.getKeyCode() == KeyEvent.VK_M){
+            System.out.println(resolution);
         }
     }
         
@@ -95,17 +101,15 @@ public class Sketch extends PApplet{
          }
          else{
            
-           message="Bravo " + Long.toString((System.currentTimeMillis()-tempsD)/1000) + " secondes";
+           message="Bravo " + Long.toString((System.currentTimeMillis()-tempsD)/1000) + " secondes \nScore: " + score() + "\nVous avez mis " + getTempsPasse() + " minutes pour le résoudre";
          }
        effacerPaveBas();
        fill(0);
        text(message,10,COTE+25);
-       paveBas();  
-          
+       paveBas();
    }
 
     public void quadrillage() {
-        
         stroke(180);
         strokeWeight(1);
         
@@ -167,7 +171,6 @@ public class Sketch extends PApplet{
     
     
     public void deplacerCaseVide(int dir){
-        
         // dir  0:nord 1:Est 2: Sud 3:Ouest
         
         System.out.println(dir);
@@ -206,6 +209,7 @@ public class Sketch extends PApplet{
             }
         }
     }
+    
     void bravo() {
        
          int n=0;
@@ -220,18 +224,19 @@ public class Sketch extends PApplet{
              score();
             // System.out.println("OK");
          }
-         finTemps();
-    }  
+         
+    } 
             
     void paveBas(){
          noStroke();
-         fill(0,0,0,20);
+         fill(0,0,54,20);
          rect(2,COTE+2,
                  COTE-4,                    
                  50,
                  10,10
                  );
     }
+    
      void effacerPaveBas(){
          noStroke();
          fill(220);
@@ -241,44 +246,43 @@ public class Sketch extends PApplet{
                  10,10
                  ); 
      }
+     
      void paveWow(){
         noStroke();
-        fill(0,0,0,200);
+        fill(0,54,0,200);
         rect(2,COTE+2,COTE-4,50,10,10);
      }
+     
      public void resolution(){
-         for (Integer d : resolution) {
-             // dir  0:nord 1:Est 2: Sud 3:Ouest
-            switch (d){
-                case 0: ligClick=ligVide+1;colClick=colVide; break;
-                case 1: colClick=colVide-1;ligClick=ligVide; break;
-                case 2: ligClick=ligVide-1;colClick=colVide; break;
-                case 3: colClick=colVide+1;ligClick=ligVide; break;
-            }
-            Collections.sort(resolution);
-            Collections.reverse(resolution);
-            deplacerCaseVide(d);
-         }
+        Collections.reverse(resolution);
+        System.out.println(resolution);
      }
      
+//<editor-fold defaultstate="collapsed" desc="calcul de temps">
      long debutTemps() {
          
-            long startTime = System.currentTimeMillis();
-            return startTime; 
+         long startTime = System.currentTimeMillis();
+         return startTime;
      }
      
      long finTemps() {
-            long finTemps = System.currentTimeMillis();
-            return finTemps; 
+         long finTemps = System.currentTimeMillis();
+         return finTemps;
      }
+     
+//</editor-fold>
      
      long getTempsPasse() {
             return (finTemps - debutTemps);
      }  
      
-     void score(){
+    public double score(){
          //666-(nbDeplacement*1.1)-(temps*1.5)+(niveau*1.3)
           double score = 666-(cpt*1.1f)-(getTempsPasse()*1.5f)+(niveau*1.3f);
           System.out.println("Score: " + score);
+          System.out.println("Vous avez mis " + getTempsPasse() + " minutes"
+                + " pour le résoudre");
+          
+          return score;
      }
 }
