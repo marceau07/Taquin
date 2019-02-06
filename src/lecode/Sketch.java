@@ -17,11 +17,11 @@ public class Sketch extends PApplet{
     int colClick ,ligClick;
     int colVide,ligVide;
     int cpt=-1-NBDEPMAX;
-    long tempsD;
-    long debutTemps;
-    long finTemps;
     
     int niveau;
+    
+    long debutTemps;
+    long finTemps;
     
     boolean reussi=false;
     
@@ -52,9 +52,8 @@ public class Sketch extends PApplet{
         quadrillage();
         remplirGrille();
         melanger();
-     
         
-        tempsD= System.currentTimeMillis();
+        debutTemps = System.currentTimeMillis();
 //        System.out.println(resolution);
 //        Collections.reverse(resolution);
 //        System.out.println(resolution);
@@ -92,16 +91,15 @@ public class Sketch extends PApplet{
         }
     }
         
-     
     @Override
     public void draw() {
      String message;
          if (!reussi){ 
-            message="temps ecoulé: "+Long.toString((System.currentTimeMillis()-tempsD)/1000)+" secondes et "+Long.toString(cpt)+" deplacements";
+            message="Temps ecoulé: "+Long.toString((System.currentTimeMillis()-debutTemps)/1000)+" secondes et "+Long.toString(cpt)+" deplacements";
          }
          else{
-           
-           message="Bravo " + Long.toString((System.currentTimeMillis()-tempsD)/1000) + " secondes \nScore: " + score() + "\nVous avez mis " + getTempsPasse() + " minutes pour le résoudre";
+           //finTemps = System.currentTimeMillis();
+           message="Bravo " + /*Long.toString((System.currentTimeMillis()-tempsD)/1000)*/"" + "\nScore: " + score() + "\nVous avez mis " + Long.toString((finTemps-debutTemps)/1000) + " secondes pour le résoudre";
          }
        effacerPaveBas();
        fill(0);
@@ -145,7 +143,6 @@ public class Sketch extends PApplet{
         text("",col*DIMCASE+DIMCASE/2-2,lig*DIMCASE+DIMCASE/2-2);  
     }
     
-    
     void dessinerPave(String texte,int col, int lig){
     
         stroke(180);         // gris du contour du pave
@@ -167,8 +164,6 @@ public class Sketch extends PApplet{
         effacerPave(colVide,ligVide);
         cpt++;
     }
-    
-    
     
     public void deplacerCaseVide(int dir){
         // dir  0:nord 1:Est 2: Sud 3:Ouest
@@ -194,7 +189,6 @@ public class Sketch extends PApplet{
         int nDep=0;
         int dirPred=4;
         
-        
         while(nDep<=NBDEPMAX){
         
             int n= (int) random(4);
@@ -212,77 +206,56 @@ public class Sketch extends PApplet{
     
     void bravo() {
        
-         int n=0;
+        int n=0;
         
-         for(int nc=0;nc<NBCASES;nc++)  for(int nl=0;nl<NBCASES;nl++){
+        for(int nc=0;nc<NBCASES;nc++)  for(int nl=0;nl<NBCASES;nl++){
          
-             if (etat[nc][nl]== etatI[nc][nl]) n++;
-         } 
+            if (etat[nc][nl]== etatI[nc][nl]) n++;
+        } 
         
-         if(n==NBCASES*NBCASES){
-             reussi=true;
-             score();
-            // System.out.println("OK");
-         }
-         
+        if(n==NBCASES*NBCASES){
+            reussi=true;
+            finTemps = System.currentTimeMillis();
+            //score();
+        }
     } 
             
     void paveBas(){
-         noStroke();
-         fill(0,0,54,20);
-         rect(2,COTE+2,
-                 COTE-4,                    
-                 50,
-                 10,10
-                 );
+        noStroke();
+        fill(0,0,54,20);
+        rect(2,COTE+2,
+                COTE-4,                    
+                50,
+                10,10
+                );
     }
     
-     void effacerPaveBas(){
-         noStroke();
-         fill(220);
-         rect(2,COTE+2,
-                 COTE-4,                    
-                 50,
-                 10,10
-                 ); 
-     }
+    void effacerPaveBas(){
+        noStroke();
+        fill(220);
+        rect(2,COTE+2,
+                COTE-4,                    
+                50,
+                10,10
+                ); 
+    }
      
-     void paveWow(){
+    void paveWow(){
         noStroke();
         fill(0,54,0,200);
         rect(2,COTE+2,COTE-4,50,10,10);
-     }
+    }
      
-     public void resolution(){
+    public void resolution(){
         Collections.reverse(resolution);
-        System.out.println(resolution);
-     }
+        melanger();
+    }
      
-//<editor-fold defaultstate="collapsed" desc="calcul de temps">
-     long debutTemps() {
-         
-         long startTime = System.currentTimeMillis();
-         return startTime;
-     }
-     
-     long finTemps() {
-         long finTemps = System.currentTimeMillis();
-         return finTemps;
-     }
-     
-//</editor-fold>
-     
-     long getTempsPasse() {
-            return (finTemps - debutTemps);
-     }  
-     
-    public double score(){
-         //666-(nbDeplacement*1.1)-(temps*1.5)+(niveau*1.3)
-          double score = 666-(cpt*1.1f)-(getTempsPasse()*1.5f)+(niveau*1.3f);
-          System.out.println("Score: " + score);
-          System.out.println("Vous avez mis " + getTempsPasse() + " minutes"
-                + " pour le résoudre");
-          
-          return score;
-     }
+    public float score(){
+        //666-(nbDeplacement*1.1)-(temps*1.5)+(niveau*1.3)
+         float score = (((0-(cpt*1.1f)+((finTemps-debutTemps)*1.5f)+(niveau*1.3f))*100))/1000;
+        
+         return score;
+    }
+    
 }
