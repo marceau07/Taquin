@@ -1,27 +1,27 @@
 package lecode;
 
+import donnees.Personne;
 import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import processing.core.PApplet;
 
 public class Sketch extends PApplet{
     
-    int DIMCASE=80, NBCASES=4, COTE=DIMCASE*NBCASES;
+    int DIMCASE=80, NBCASES=4, COTE=DIMCASE*NBCASES, NBDEPMAX=1;
     
     List<Integer> resolution = new LinkedList();
     
-    int NBDEPMAX=1;
-    
-    int colClick ,ligClick;
-    int colVide,ligVide;
+    int colClick , ligClick, colVide, ligVide;
     int cpt=-1-NBDEPMAX;
     
     int niveau;
     
-    long debutTemps;
-    long finTemps;
+    long debutTemps; long finTemps;
+    
+    String nomChoisi; Scanner clavier = new Scanner(System.in);
     
     boolean reussi=false;
     
@@ -41,7 +41,8 @@ public class Sketch extends PApplet{
     
     @Override
     public void setup() {
-       
+        nomChoisi = clavier.next();
+        
         background(220);
        
         frame.setTitle("CH'TAQUIN LÔ - Niveau " + niveau);
@@ -258,4 +259,10 @@ public class Sketch extends PApplet{
          return score;
     }
     
+    public void joueurs(){
+        //On créé le joueur
+        Personne pseudo = new Personne();
+        pseudo.prenom = nomChoisi;
+        pseudo.score = (int) score();
+    }
 }
