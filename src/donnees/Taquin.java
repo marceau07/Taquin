@@ -13,5 +13,5 @@ import java.util.List;
  * @author marce
  */
 public class Taquin {
-    public List<Personne> listeDesPersonnes = new LinkedList<Personne>(); 
+    public static List<Personne> listeDesPersonnes = new LinkedList<Personne>(); 
 }

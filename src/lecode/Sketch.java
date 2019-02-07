@@ -1,14 +1,21 @@
 package lecode;
 
+
 import donnees.Personne;
+import static donnees.Taquin.listeDesPersonnes;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import processing.core.PApplet;
 
-public class Sketch extends PApplet{
+public class Sketch extends PApplet {
     
     int DIMCASE=80, NBCASES=4, COTE=DIMCASE*NBCASES, NBDEPMAX=1;
     
@@ -20,6 +27,8 @@ public class Sketch extends PApplet{
     int niveau;
     
     long debutTemps; long finTemps;
+    
+    BufferedWriter sortie;
     
     String nomChoisi; Scanner clavier = new Scanner(System.in);
     
@@ -38,10 +47,16 @@ public class Sketch extends PApplet{
                     { 3,  7,  11, 15}, // colonne d'abscisse 2 de la grille
                     { 4,  8,  12,  0}  // colonne d'abscisse 3 de la grille
                   };
+
+    public Sketch() throws IOException{
+        this.sortie = new BufferedWriter(new FileWriter("pseudo.txt"));
+    }
     
     @Override
     public void setup() {
+        System.out.println("Veuillez saisir votre pseudo:");
         nomChoisi = clavier.next();
+        joueurs();
         
         background(220);
        
@@ -205,8 +220,10 @@ public class Sketch extends PApplet{
         }
     }
     
-    void bravo() {
-       
+    void bravo() throws IOException {
+        
+        remplirFichier();
+        
         int n=0;
         
         for(int nc=0;nc<NBCASES;nc++)  for(int nl=0;nl<NBCASES;nl++){
@@ -220,7 +237,7 @@ public class Sketch extends PApplet{
             //score();
         }
     } 
-            
+    
     void paveBas(){
         noStroke();
         fill(0,0,54,20);
@@ -259,10 +276,21 @@ public class Sketch extends PApplet{
          return score;
     }
     
-    public void joueurs(){
+     public void joueurs(){
         //On créé le joueur
         Personne pseudo = new Personne();
         pseudo.prenom = nomChoisi;
         pseudo.score = (int) score();
+        listeDesPersonnes.add(pseudo);
     }
+     
+     public void remplirFichier() throws IOException{
+         for (Personne p : listeDesPersonnes){
+             sortie.write(p.prenom);sortie.write(";");
+             sortie.write(p.score);sortie.write(";");
+             sortie.newLine();
+             System.out.println("Prenom: " + p.prenom + "\n Score:"+score());
+         }
+         sortie.close();
+     }
 }
