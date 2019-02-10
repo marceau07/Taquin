@@ -1,10 +1,13 @@
 package lecode;
 
-
+//<editor-fold defaultstate="collapsed" desc="imports">
 import donnees.Personne;
+import donnees.Taquin;
 import static donnees.Taquin.listeDesPersonnes;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
@@ -14,6 +17,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import processing.core.PApplet;
+//</editor-fold>
 
 public class Sketch extends PApplet {
     
@@ -27,8 +31,6 @@ public class Sketch extends PApplet {
     int niveau;
     
     long debutTemps; long finTemps;
-    
-    BufferedWriter sortie;
     
     String nomChoisi; Scanner clavier = new Scanner(System.in);
     
@@ -47,10 +49,6 @@ public class Sketch extends PApplet {
                     { 3,  7,  11, 15}, // colonne d'abscisse 2 de la grille
                     { 4,  8,  12,  0}  // colonne d'abscisse 3 de la grille
                   };
-
-    public Sketch() throws IOException{
-        this.sortie = new BufferedWriter(new FileWriter("pseudo.txt"));
-    }
     
     @Override
     public void setup() {
@@ -70,9 +68,6 @@ public class Sketch extends PApplet {
         melanger();
         
         debutTemps = System.currentTimeMillis();
-//        System.out.println(resolution);
-//        Collections.reverse(resolution);
-//        System.out.println(resolution);
     }
     
     @Override
@@ -109,13 +104,14 @@ public class Sketch extends PApplet {
         
     @Override
     public void draw() {
-     String message;
+         String message;
          if (!reussi){ 
             message="Temps ecoulé: "+Long.toString((System.currentTimeMillis()-debutTemps)/1000)+" secondes et "+Long.toString(cpt)+" deplacements";
          }
          else{
            //finTemps = System.currentTimeMillis();
-           message="Bravo " + /*Long.toString((System.currentTimeMillis()-tempsD)/1000)*/"" + "\nScore: " + score() + "\nVous avez mis " + Long.toString((finTemps-debutTemps)/1000) + " secondes pour le résoudre";
+           message="Bravo !" + "\nScore: " + score() + "\nVous avez mis " + Long.toString((finTemps-debutTemps)/1000) + " secondes pour le résoudre";
+           
          }
        effacerPaveBas();
        fill(0);
@@ -220,10 +216,7 @@ public class Sketch extends PApplet {
         }
     }
     
-    void bravo() throws IOException {
-        
-        remplirFichier();
-        
+    void bravo() {
         int n=0;
         
         for(int nc=0;nc<NBCASES;nc++)  for(int nl=0;nl<NBCASES;nl++){
@@ -234,7 +227,11 @@ public class Sketch extends PApplet {
         if(n==NBCASES*NBCASES){
             reussi=true;
             finTemps = System.currentTimeMillis();
-            //score();
+            try {
+                remplirFichier();
+            } catch (IOException ex) {
+                Logger.getLogger(Sketch.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     } 
     
@@ -284,13 +281,38 @@ public class Sketch extends PApplet {
         listeDesPersonnes.add(pseudo);
     }
      
-     public void remplirFichier() throws IOException{
+    /**
+     *
+     * @return
+     * @throws IOException
+     */
+    public void remplirFichier() throws IOException{
+         BufferedWriter sortie = new BufferedWriter(new FileWriter("pseudo.txt"));
          for (Personne p : listeDesPersonnes){
-             sortie.write(p.prenom);sortie.write(";");
-             sortie.write(p.score);sortie.write(";");
              sortie.newLine();
-             System.out.println("Prenom: " + p.prenom + "\n Score:"+score());
+             sortie.write(p.prenom);sortie.write(" ");
+             sortie.write(String.valueOf(p.score));sortie.write(";");
+             sortie.newLine();
          }
          sortie.close();
+     }
+     
+     public void lireFichier() throws IOException {
+         BufferedReader entree = new BufferedReader(new FileReader("pseudo.txt"));
+         System.out.println("Liste des joueurs :");
+         
+         String ligne = entree.readLine();
+         while (ligne != null){
+             String[] infos = ligne.split(";");
+             
+             for(String s : infos){
+                 System.out.printf("-20%s",s);
+             }
+             
+             System.out.println();
+             
+             ligne = entree.readLine();
+         }
+         System.out.println();
      }
 }
