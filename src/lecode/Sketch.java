@@ -63,7 +63,7 @@ public class Sketch extends PApplet {
         size(COTE,COTE+55);
         smooth(); 
         
-        quadrillage();
+        //quadrillage();
         remplirGrille();
         melanger();
         
@@ -89,6 +89,7 @@ public class Sketch extends PApplet {
         if (e.getKeyCode() == KeyEvent.VK_R){
             NBDEPMAX++;
             niveau++;
+            stop();
             setup();
             cpt = 0;
         }
@@ -110,12 +111,14 @@ public class Sketch extends PApplet {
          }
          else{
            //finTemps = System.currentTimeMillis();
+           effacerPaveBas();
+           paveWow();
            message="Bravo !" + "\nScore: " + score() + "\nVous avez mis " + Long.toString((finTemps-debutTemps)/1000) + " secondes pour le résoudre";
            
          }
        effacerPaveBas();
        fill(0);
-       text(message,10,COTE+25);
+       text(message,10,COTE+20);
        paveBas();
    }
 
@@ -258,7 +261,7 @@ public class Sketch extends PApplet {
     void paveWow(){
         noStroke();
         fill(0,54,0,200);
-        rect(2,COTE+2,COTE-4,50,10,10);
+        rect(4,COTE+2,COTE-4,50,10,10);
     }
      
     public void resolution(){
@@ -283,10 +286,9 @@ public class Sketch extends PApplet {
      
     /**
      *
-     * @return
      * @throws IOException
      */
-    public void remplirFichier() throws IOException{
+    public void lireFichier() throws IOException{
          BufferedWriter sortie = new BufferedWriter(new FileWriter("pseudo.txt"));
          for (Personne p : listeDesPersonnes){
              sortie.newLine();
@@ -297,7 +299,7 @@ public class Sketch extends PApplet {
          sortie.close();
      }
      
-     public void lireFichier() throws IOException {
+     public void remplirFichier() throws IOException {
          BufferedReader entree = new BufferedReader(new FileReader("pseudo.txt"));
          System.out.println("Liste des joueurs :");
          
@@ -314,5 +316,9 @@ public class Sketch extends PApplet {
              ligne = entree.readLine();
          }
          System.out.println();
+     }
+     
+     public void afficherJoueurs(){
+         
      }
 }
