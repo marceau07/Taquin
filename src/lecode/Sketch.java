@@ -66,6 +66,11 @@ public class Sketch extends PApplet {
         //quadrillage();
         remplirGrille();
         melanger();
+        try {
+             lireFichier();
+            } catch (IOException ex) {
+                Logger.getLogger(Sketch.class.getName()).log(Level.SEVERE, null, ex);
+            }
         
         debutTemps = System.currentTimeMillis();
     }
@@ -288,10 +293,9 @@ public class Sketch extends PApplet {
      *
      * @throws IOException
      */
-    public void lireFichier() throws IOException{
-         BufferedWriter sortie = new BufferedWriter(new FileWriter("pseudo.txt"));
+    public void remplirFichier() throws IOException{
+         BufferedWriter sortie = new BufferedWriter(new FileWriter("pseudo.txt",true));
          for (Personne p : listeDesPersonnes){
-             sortie.newLine();
              sortie.write(p.prenom);sortie.write(" ");
              sortie.write(String.valueOf(p.score));sortie.write(";");
              sortie.newLine();
@@ -299,7 +303,7 @@ public class Sketch extends PApplet {
          sortie.close();
      }
      
-     public void remplirFichier() throws IOException {
+     public void lireFichier() throws IOException {
          BufferedReader entree = new BufferedReader(new FileReader("pseudo.txt"));
          System.out.println("Liste des joueurs :");
          
@@ -308,7 +312,7 @@ public class Sketch extends PApplet {
              String[] infos = ligne.split(";");
              
              for(String s : infos){
-                 System.out.printf("-20%s",s);
+                 System.out.printf("%-20s",s);
              }
              
              System.out.println();
