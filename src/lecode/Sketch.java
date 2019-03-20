@@ -323,6 +323,50 @@ public class Sketch extends PApplet {
      }
      
      public void afficherJoueurs(){
+      
          
      }
+//public void img() {
+//
+//    PImage i = loadImage("monimage.jpg");
+//    PImage pi =                         ;
+//    image()                             ;
+//    
+//}
+// public int xA(int n , int nbCases,int tailleCase){
+//    
+//      return (n%nbCases)*tailleCase;
+//    }
+//    
+//    
+//    public int yA(int n , int nbCases,int tailleCase){
+//    
+//      return(n/nbCases)*tailleCase;
+//    }
+//    
+//    public int n1(int n, int nbCases){ return (n+nbCases*nbCases-1)% ( nbCases*nbCases);    }
+//    
+//    public void executer(){
+//    
+//       
+//        System.out.println();
+//        
+//        for ( int n=0; n<NC*NC;n++){
+//        
+//            System.out.printf("n= %2d x= %3d y= %3d\n",n, xA(n,NC,TC),yA(n,NC,TC));
+//        }
+//        
+//        System.out.println();
+//         
+//        System.out.println();
+//        
+//        for ( int n=0; n<NC*NC;n++){
+//        
+//            System.out.printf("n= %2d x= %3d y= %3d\n",n, xA(n1(n,NC),NC,TC),yA(n1(n,NC),NC,TC));
+//        }
+//        
+//        System.out.println();
+//    }
+//    
+
 }
