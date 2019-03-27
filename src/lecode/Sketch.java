@@ -52,9 +52,9 @@ public class Sketch extends PApplet {
     
     @Override
     public void setup() {
-        System.out.println("Veuillez saisir votre pseudo:");
-        nomChoisi = clavier.next();
-        joueurs();
+//        System.out.println("Veuillez saisir votre pseudo:");
+//        nomChoisi = clavier.next();
+//        joueurs();
         
         background(220);
        
@@ -94,13 +94,16 @@ public class Sketch extends PApplet {
         if (e.getKeyCode() == KeyEvent.VK_R){
             NBDEPMAX++;
             niveau++;
-            stop();
             setup();
             cpt = 0;
         }
         //Solution
         if (e.getKeyCode() == KeyEvent.VK_S){
             resolution();
+        }
+        //Pause
+        if(e.getKeyCode() == KeyEvent.VK_P){
+            
         }
         
         if (e.getKeyCode() == KeyEvent.VK_M){
@@ -118,7 +121,7 @@ public class Sketch extends PApplet {
            //finTemps = System.currentTimeMillis();
            effacerPaveBas();
            paveWow();
-           message="Bravo !" + "\nScore: " + score() + "\nVous avez mis " + Long.toString((finTemps-debutTemps)/1000) + " secondes pour le résoudre";
+           message="Bravo !" + "\nScore: " + score((finTemps-debutTemps)/1000,this.NBDEPMAX) + "\nVous avez mis " + Long.toString((finTemps-debutTemps)/1000) + " secondes pour le résoudre";
            
          }
        effacerPaveBas();
@@ -274,9 +277,9 @@ public class Sketch extends PApplet {
         melanger();
     }
      
-    public float score(){
+    public long score(long temps,long nbDep){
         //666-(nbDeplacement*1.1)-(temps*1.5)+(niveau*1.3)
-         float score = (((0-(cpt*1.1f)+((finTemps-debutTemps)*1.5f)+(niveau*1.3f))*100))/1000;
+         long score = (long)100-nbDep-temps;
         
          return score;
     }
@@ -285,7 +288,7 @@ public class Sketch extends PApplet {
         //On créé le joueur
         Personne pseudo = new Personne();
         pseudo.prenom = nomChoisi;
-        pseudo.score = (int) score();
+        pseudo.score = score(finTemps-debutTemps,this.NBDEPMAX);
         listeDesPersonnes.add(pseudo);
     }
      
@@ -296,8 +299,8 @@ public class Sketch extends PApplet {
     public void remplirFichier() throws IOException{
          BufferedWriter sortie = new BufferedWriter(new FileWriter("pseudo.txt",true));
          for (Personne p : listeDesPersonnes){
-             sortie.write(p.prenom);sortie.write(" ");
-             sortie.write(String.valueOf(p.score));sortie.write(";");
+             sortie.write(p.prenom);sortie.write(";");
+             sortie.write(String.valueOf(p.score));
              sortie.newLine();
          }
          sortie.close();
@@ -323,7 +326,9 @@ public class Sketch extends PApplet {
      }
      
      public void afficherJoueurs(){
-      
+         for(Personne p : listeDesPersonnes){
+             
+         }
          
      }
 //public void img() {
