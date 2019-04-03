@@ -11,5 +11,5 @@ package donnees;
  */
 public class Personne {
     public String   prenom;
-    public int      score;
+    public long      score;
 }
